@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>IFE ECMAScript</title>
+    <style>
+        select {
+            display: none;
+        }
+        .appear {
+          display: block;
+        }
+    </style>
+</head>
+<body>            
+    <label>
+        <input id="school" name="status" type="radio">
+        School
+    </label>
+    <label>
+        <input id="company" name="status" type="radio">
+        Company
+    </label>
+
+    <select id="school-select">        
+        <option>北京邮电大学</option>
+        <option>黑龙江大学</option>
+        <option>华中科技大学</option>
+    </select>
+
+    <select id="company-select">        
+        <option>百度</option>
+        <option>爱奇艺</option>        
+    </select>      
+    <script type="text/javascript">      
+    	var schoolSlc = document.getElementById('school-select');      
+      var companySlc = document.getElementById('company-select');
+      
+      document.body.onclick = function(e) {
+        if(e.target.id === 'school')
+        {
+          schoolSlc.setAttribute('class','appear');
+          companySlc.setAttribute('class','');
+        }else if(e.target.id === 'company')
+        {
+          schoolSlc.setAttribute('class','');
+          companySlc.setAttribute('class','appear');
+        }        
+      }
+        
+//       function slc(){
+//       if(school.checked)
+//       {
+//         schoolSlc.style.display = 'block';
+//         companySlc.style.display = 'none';
+//       }else if(company.checked)
+//       {
+//         companySlc.style.display = 'block';
+//         schoolSlc.style.display = 'none';
+//       }
+//       }
+    </script>
+</body>
+</html>

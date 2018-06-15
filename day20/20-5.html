@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>IFE ECMAScript</title>
+</head>
+
+<body>
+    <h3>点击图片开始笑</h3>
+    <div id="erik" style="width:480px;height:480px"></div>
+    <script type="text/javascript">
+        var div = document.getElementById('erik');
+        var col = 0;
+        erik.style.background = "url('img/erik.jpg') no-repeat 0 0";
+        var t; 
+        var sp;
+        function ha() {
+            if (col === -7680) {
+                sp = 480;
+            }else if(col === 0){
+                sp = -480;
+            }
+            erik.style.backgroundPosition = '0 ' + col + 'px';
+            col += sp;
+            console.log(col);
+           
+        }
+        
+//         function hei() {
+//         	erik.style.backgroundPosition = '0 ' + col + 'px';
+//         	col += 480;
+//         	console.log(col);
+//         	if (col >= 0) {
+//         		clearInterval(t);
+//         		t = setInterval(ha,60);
+//         	}
+//         }
+        
+        div.onclick = function(){
+            clearInterval(t);           
+            t = setInterval(ha,60);            
+        }
+    </script>
+</body>
+
+</html>
