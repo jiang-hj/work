@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="inp">
+    <button>搜id</button>
+    <button>搜name</button>
+    <button>先序</button>
+    <button>中序</button>
+    <button>后续</button>
+   
+    <script>
+    var tree = {
+    "id": 0,
+    "name": "root",
+    "left": {
+        "id": 1,
+        "name": "Simon",
+        "left": {
+            "id": 3,
+            "name": "Carl",
+            "left": {
+                "id": 7,
+                "name": "Lee",
+                "left": {
+                    "id": 11,
+                    "name": "Fate"
+                }
+            },
+            "right": {
+                "id": 8,
+                "name": "Annie",
+                "left": {
+                    "id": 12,
+                    "name": "Saber"
+                }
+            }
+        },
+        "right": {
+            "id": 4,
+            "name": "Tony",
+            "left": {
+                "id": 9,
+                "name": "Candy"
+            }
+        }
+    },
+    "right": {
+        "id": 2,
+        "name": "right",
+        "left": {
+            "id": 5,
+            "name": "Carl",
+        },
+        "right": {
+            "id": 6,
+            "name": "Carl",
+            "right": {
+                "id": 10,
+                "name": "Kai"
+            }        
+        }
+    }
+}
+/*
+function searchId(ob,ind,i) {
+    if(i ===-1 )   
+    {
+        return;
+    }        
+    for(let x in ob)
+    {  
+         if(x==='id')
+        {
+           
+            if(ob.name === ind)
+            {
+                console.log("id= " + ob['id']); 
+                i = -1;
+            }
+        }
+    
+        // else if(x==='name')
+        // {console.log(ob['name'])}
+        else if(x==='left')
+        {
+        searchId(ob['left'],ind,i);
+        }else if(x==='right'){
+        searchId(ob['right'],ind,i);
+        }
+        
+    }
+}
+*/
+
+function searchName(tree,id) {      
+    if(tree.id === id)
+    {
+        console.log('id: ' + id + ', name: ' + tree.name);
+        return;
+    }
+    if(tree.left !== undefined)
+    {
+        searchName(tree.left,id);
+    }
+    if(tree.right !== undefined)
+    {
+        searchName(tree.right,id);
+    }
+}
+
+function searchId(tree,name) {          
+    if(tree.name === name)
+    {
+        console.log('name: '+ name + ', id: ' + tree.id);
+        return;
+    }
+    if(tree.left !== undefined)
+    {
+        searchId(tree.left,name);
+    }
+    if(tree.right !== undefined)
+    {
+        searchId(tree.right,name);
+    }
+}
+
+function DLR(tree) {
+        console.log('id: ' + tree.id);
+        console.log('name: ' + tree.name);
+        if(tree.left !== undefined)
+        {
+            DLR(tree.left);
+        }
+        if(tree.right !== undefined)
+        {
+            DLR(tree.right)
+        }
+    }
+
+function LDR(tree) {
+    if(tree.left !== undefined)
+    {
+        LDR(tree.left);
+    }
+    console.log('id: ' + tree.id);
+    console.log('name: ' + tree.name);
+    if(tree.right !== undefined)
+    {
+        LDR(tree.right)
+    }
+}
+
+function LRD(tree) {
+    if(tree.left !== undefined)
+    {
+        LRD(tree.left);
+    }
+    if(tree.right !== undefined)
+    {
+        LRD(tree.right)
+    }
+    console.log('id: ' + tree.id);
+    console.log('name: ' + tree.name);
+}
+// Get(tree);
+// con(tree,'Lee');
+
+
+// 假设id和name均不会重复，根据输入name找到对应的id
+function findIdByName(name) {
+    searchId(tree,name);
+}
+
+// findIdByName('root');
+// 假设id和name均不会重复，根据输入id找到对应的name
+function findNameById(id) {
+    searchName(tree,id);
+}
+
+// 把这个对象中所有的名字以“前序遍历”的方式全部输出到console中
+function getListWithDLR() {
+    DLR(tree);
+}
+
+// 把这个对象中所有的名字以“中序遍历”的方式全部输出到console中
+function getListWithLDR() {
+    LDR(tree);
+}
+
+// 把这个对象中所有的名字以“后序遍历”的方式全部输出到console中
+function getListWithLRD() {
+    LRD(tree);
+}
+    </script>
+     <script>
+        var btn = document.getElementsByTagName('button');
+        var input = document.getElementById('inp');
+        btn[2].onclick = getListWithDLR;
+        btn[3].onclick = getListWithLDR;
+        btn[4].onclick = getListWithLRD;
+        btn[0].onclick = function(){
+            let name = input.value;
+            findIdByName(name);
+        }
+        btn[1].onclick = function(){
+            let id = Number(input.value);
+            findNameById(id);
+        }
+    </script>
+</body>
+</html>

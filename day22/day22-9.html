@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>var arr = [43, 54, 4, -4, 84, 100, 58, 27, 140];</p>
+    <button>排序</button>
+    <p>var arr = ['apple', 'dog', 'cat', 'car', 'zoo', 'orange', 'airplane'];</p>
+    <button>排序</button>
+    <p>var arr = [[10, 14], [16, 60], [7, 44], [26, 35], [22, 63]];</p>
+    <button>排序</button>
+    <pre>
+         var arr = [
+         {
+             id: 1,
+             name: 'candy',
+             value: 40
+         }, {
+             id: 2,
+             name: 'Simon',
+             value: 50
+         }, {
+             id: 3,
+             name: 'Tony',
+             value: 45
+         }, {
+             id: 4,
+             name: 'Annie',
+             value: 60
+         }
+        ];
+    </pre>
+    <button>排序</button>
+    <script>
+        var arr1 = [43, 54, 4, -4, 84, 100, 58, 27, 140];
+        var arr2 = ['apple', 'dog', 'cat', 'car', 'zoo', 'orange', 'airplane'];
+        var arr3 = [[10, 14], [16, 60], [7, 44], [26, 35], [22, 63]];
+        var arr4 = [
+            {
+                id: 1,
+                name: 'candy',
+                value: 40
+            }, {
+                id: 2,
+                name: 'Simon',
+                value: 50
+            }, {
+                id: 3,
+                name: 'Tony',
+                value: 45
+            }, {
+                id: 4,
+                name: 'Annie',
+                value: 60
+            }
+        ];
+
+        var btn = document.getElementsByTagName('button');
+
+    function compare1(a,b) {
+        return a - b;
+    }
+
+    function compare2(a,b) {
+        return b - a;
+    }
+
+    function compare3(a,b) {
+        if(a[1] < b[2])
+        {
+            return 1;
+        }
+        if(a[1] > b[1])
+        {
+            return -1;
+        }
+        if(a[1] = b[1])
+        {
+            return 0;
+        }
+    }
+
+    function compare4(a,b) {        
+        return Number(b.value) - Number(a.value);
+    }
+
+    btn[0].onclick = function() {
+        arr1.sort(compare1);
+        console.log('[' + arr1.join(',') + ']');
+        arr1.sort(compare2);
+        console.log('[' + arr1.join(',') + ']');        
+    }
+
+    btn[1].onclick = function() {
+        arr2.sort();
+        console.log('[' + arr2.join(',') + ']');   
+    }
+
+    btn[2].onclick = function() {
+        arr3.sort(compare3);
+        console.log('[' + arr3.join(',') + ']');   
+    }
+
+    btn[3].onclick = function() {
+        arr4.sort(compare4);        
+        for(let i = 0; i < arr4.length; i++)
+        {
+            console.log('id: ' + arr4[i].id + ' name: ' + arr4[i].name + ' value: ' + arr4[i].value);
+        }  
+    }
+    </script>
+</body>
+
+</html>
