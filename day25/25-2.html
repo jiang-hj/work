@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <p id="time"></p> 
+    <p></p>
+    <script src="date.js"></script>   <!--为了作业3再利用，函数在放在date.js中-->
+    <script>
+    var p = document.getElementsByTagName('p');
+
+    function show() {
+        let time = new Date();
+        p[0].innerHTML = dateAndTimestr(time,1,1);
+        p[1].innerHTML = dateAndTimestr(time,2,2);
+    }
+
+    var show = setInterval(show,500);
+
+
+
+
+    
+    // var date = new Date();
+    // var weekday_CHE = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']
+    // var weekday_ENG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    
+    // var year = date.getFullYear();
+    // var month = date.getMonth();
+    // var day = date.getDate();
+    // var weekday = date.getDay();
+    // var hour = date.getHours();
+    // var minute = date.getMinutes();
+    // var second = date.getSeconds();    
+
+    // function getTime() {
+    //     date = new Date();
+    //     year = date.getFullYear();
+    //     month = date.getMonth();
+    //     day = date.getDate();
+    //     weekday = date.getDay();
+    //     hour = date.getHours();
+    //     minute = date.getMinutes();
+    //     second = date.getSeconds();       
+    // }
+
+    // function fomatDate(n) {
+    //     var temp;        
+    //     switch(n)
+    //     {
+    //     case 1:
+    //     temp = year + '年 ' + fomat(month) + '月 ' + fomat(day) + '日 ';
+    //     return temp;
+    //     case 2:
+    //     temp = year + '-' + fomat(month) + '-' + fomat(day);
+    //     return temp;
+    //     }
+    // }
+
+    // function fomatTime(n) {
+    //     var temp;
+    //     if(n ===12)
+    //     {
+    //         if(hour > 12)
+    //         {
+    //             temp = fomat(hour - 12) + ':' + fomat(minute) + ':' + fomat(second) + ' PM'
+    //         }else{
+    //             temp = fomat(hour) + ':' + fomat(minute) + ':' + fomat(second) + ' AM'
+    //         }
+    //     }else{
+    //         temp = fomat(hour) + ':' + fomat(minute) + ':' + fomat(second)
+    //     }
+    //     return temp;
+    // }
+
+    // function fomat(n) {
+    //     if(n < 10)
+    //     {
+    //         return '0' + n;
+    //     }else{
+    //         return n;
+    //     }
+    // }
+
+    // function show() {  
+    //     getTime();      
+    //     p[0].innerHTML = fomatDate(1) + ' ' + weekday_CHE[weekday] + ' ' + fomatTime();
+    //     p[1].innerHTML = fomatDate(2) + ' ' + weekday_ENG[weekday] + ' ' + fomatTime(12);
+    // }
+    
+    
+
+
+    </script>
+</body>
+</html>

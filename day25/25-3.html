@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <select id="year-select">
+        <!-- <option value="2000">2000</option>
+        <option value="2001">2001</option>
+        <option value="2002">2002</option>
+        ……
+        <option value="2032">2002</option> -->
+    </select>
+
+    <select id="month-select">
+        <!-- <option value="1">1</option>
+        <option value="2">2</option>
+        ……
+        <option value="12">12</option> -->
+    </select>
+
+    <select id="day-select">
+        <!-- <option value="1">1</option>
+        <option value="2">2</option>
+        ……
+        <option value="31">31</option> -->
+    </select>
+
+    <select id="hour-select">
+        <!-- <option value="0">00</option>
+        <option value="1">01</option>
+        ……
+        <option value="23">23</option> -->
+    </select>
+
+    <select id="minite-select">
+        <!-- <option value="0">0</option>
+        <option value="1">1</option>
+        ……
+        <option>59</option> -->
+    </select>
+
+    <select id="second-select">
+        <!-- <option value="0">0</option>
+        <option value="1">1</option>
+        ……
+        <option>59</option> -->
+    </select>
+
+    <p id="result-wrapper">现在距离 2001年1月1日星期X HH:MM:SS 还有 X 天 X 小时 X 分 X 秒</p>
+    <script src="date.js"></script>
+    <script>
+        var select = document.querySelectorAll('select');
+        var p = document.querySelector('#result-wrapper');
+        
+        // for(let i = 1980; i <= 2030; i++)
+        // {
+        //     let option = document.createElement('option');
+        //     option.innerHTML = i;
+        //     select[0].appendChild(option);
+        // }
+
+
+//生成option
+        function createOption(index, min, max) {
+            for (let i = min; i <= max; i++) {
+                let option = document.createElement('option');
+                if (i < 10) {
+                    option.innerHTML = '0' + i;
+                } else {
+                    option.innerHTML = i;
+                }
+                option.value = i;
+                select[index].appendChild(option);
+            }
+        }
+
+        createOption(0, 1980, 2030);
+        createOption(1, 1, 12);
+        createOption(2, 1, 31);
+        createOption(3, 0, 23);
+        createOption(4, 0, 59);
+        createOption(5, 0, 59);
+
+//判断是否闰年
+        function isBissextile() {            
+            let year = 1980 + select[0].selectedIndex;
+            year = year % 100 === 0 ? year/100 : year;
+            if(year % 4 === 0)
+            {
+                return true;
+            }else{
+                return false;
+            }
+        }
+//判断当月天数
+        function days() {
+            switch (select[1].selectedIndex + 1) 
+            {
+                case 2:
+                return isBissextile() ? 29 : 28;                    
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    return 31;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    return 30;
+
+            }
+        }
+
+        //-----更新        
+//下拉框中的时间会通过flush方法更新
+        var myDate = new Date();            
+            myDate.flush = flush;             
+
+//移除；
+        // function setDay(d) {
+        //     select[2].selectedIndex = d - 1;            
+        //     myDate.setDate(d);
+        //     myDate.setMonth(select[1].selectedIndex);
+        // }    
+           
+        function flush() {            
+            myDate.setFullYear(select[0].selectedIndex + 1980);            
+            myDate.setMonth(select[1].selectedIndex);
+            myDate.setDate(select[2].selectedIndex + 1);
+            myDate.setHours(select[3].selectedIndex);
+            myDate.setMinutes(select[4].selectedIndex);
+            myDate.setSeconds(select[5].selectedIndex);
+        }
+
+//不存在的天数无法选择，如已选中，更改为当月最后一天；
+        function correction() {
+            for (let j = 28; j <31; j++)
+            {
+                select[2].options[j].disabled = false;                
+            }      
+            for (let j = days(); j < 31; j++)
+            {
+                select[2].options[j].disabled = true;
+            }
+            if(days() < myDate.getDate())
+            {
+                select[2].selectedIndex = d - 1;            
+                myDate.setDate(d);
+                myDate.setMonth(select[1].selectedIndex);                
+            }
+        }
+
+//返回两个时间的间隔        
+        function disTime(d1,d2) {  
+            let str;      
+            let dis = d1.getTime() - d2.getTime(); 
+            // dis = dis / 1000;    
+            if(dis >= 0)
+            {
+                str = ' 还有';                
+            }else{
+                str = ' 已经过去';
+                dis = -dis;
+            }            
+            let day = Math.floor(dis / (3600000 * 24));
+            dis = dis % (3600000 * 24);
+            let hour = Math.floor(dis / 3600000);
+            dis = dis % 3600000;
+            let minute = Math.floor(dis / 60000);
+            let second = Math.round(dis /1000 % 60);
+            str += day + '天 ' + hour + '小时 ' + minute + '分 '  + second + '秒';
+            return str;
+        }        
+
+        function show() {
+            let now = new Date();
+            p.innerHTML = '现在距离 ' + dateAndTimestr(myDate,1,1) +disTime(myDate,now);   //dateAndTimestr在date.js中；
+        }
+
+        window.onload = function() {            
+            myDate.flush();            
+            var t = setInterval(show,500);     //载入完成后，刷新设置的时间，循环执行 show 函数
+            for(let i = 0; i < select.length; i++)
+            {
+                select[i].onchange = function() {
+                    myDate.flush();
+                    correction();
+                    show();
+                }
+            }
+        }
+/*
+
+
+        // var selectDate = {
+        //     year      : select[0].selectedIndex + 1980,
+        //     month     : select[1].selectedIndex + 1, 
+        //     day       : select[2].selectedIndex + 1,
+        //     hour      : select[3].selectedIndex,
+        //     minute    : select[4].selectedIndex,
+        //     second    : select[5].selectedIndex,
+        //     setDay    : function(d) {           //设定日期，并刷新day；
+        //         select[2].selectedIndex = d - 1;
+        //         this.day = d;
+        //     }
+        // }
+
+        function days() {
+            switch (selectDate.month) {
+                case 2:
+                return isBissextile() ? 29 : 28;                    
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    return 31;
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    return 30;
+
+            }
+        }
+
+
+//刷新selectDate的所有属性；
+
+        function flush() {
+            selectDate.year = select[0].selectedIndex + 1980;
+            selectDate.month = select[1].selectedIndex + 1;
+            selectDate.day = select[2].selectedIndex + 1;
+            selectDate.hour = select[3].selectedIndex;
+            selectDate.minute = select[4].selectedIndex;
+            selectDate.second = select[5].selectedIndex;
+        }
+
+
+
+//修正日期---禁用不存在的日期，如选当前选中不存在日期，修正为该月最后一天；
+        function correction() { 
+            for (let j = 28; j <31; j++)
+            {
+                select[2].options[j].disabled = false;                
+            }      
+            for (let j = days(); j < 31; j++)
+            {
+                select[2].options[j].disabled = true;
+            }
+
+
+            if(days() < selectDate.day)
+            {
+                selectDate.setDay(days());
+            }
+        }
+
+
+
+        select[2].onmouseover = function() {
+            console.log(1);           
+            correction();
+        }
+
+        select[1].onchange = function () {
+            flush();
+            correction();
+        }
+
+         select[0].onchange = function () {
+            flush();
+            correction();
+        }
+*/  
+    </script>
+</body>
+
+</html>
