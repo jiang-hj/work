@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>    
+    body {
+        font-family: 'Microsoft YaHei';
+        font-size: 14px;        
+    }
+
+    div,
+    input,
+    ul,
+    li {
+        box-sizing: border-box;
+    }
+
+    .wrapper {
+        width: 200px;
+        height: 30px;  
+		position: relative;
+    }
+
+    #email-input {
+        width: 100%;
+        height: 100%;
+		padding-left: 10px;
+		outline: none;	
+		border: #A9A9A9 solid 1px;
+    }
+
+    .email-sug {
+        margin: 0;
+        padding: 0;    
+		width: 100%;
+		position: absolute;
+		top: 29px;
+		background-color: #ffffff;
+		border: 1px solid #a9a9a9;
+		border-top: none;
+        list-style-type: none;
+        text-align: left;	
+        display: none;
+    }
+    .email-sug li {
+		padding-left: 10px;
+        line-height: 25px;       	
+        overflow: hidden;
+		cursor: pointer;
+    }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <input id="email-input" type="text">
+        <ul id="email-sug-wrapper" class="email-sug"></ul>		
+    </div>
+    <script>
+        var input = document.getElementById('email-input');
+        var email_sug = document.getElementById('email-sug-wrapper');
+        var postfixList = ['163.com', 'gmail.com', '126.com', 'qq.com', '263.net'];
+        var index = 0;
+		
+        //将输入内容按@分割，返回分割后的数组
+		function split() {
+			let value = input.value;
+			return value.split('@');
+		}
+		
+        //获取split分割的数组第二个数组。按照内容检索合适的提示内容，加入新数组
+        //新数组如果空，返回postfixlist，不空，返回新数组。
+		function newList() {
+			let newList = new Array();
+			let flag;
+			let hostName = split()[1];			
+			if(hostName !== undefined)
+			{
+				hostName = trim(hostName);
+				for(let i =0; i < postfixList.length; i++)
+				{
+					flag = 1;
+					for (let j = 0; j < hostName.length; j++)
+					{
+						if (hostName[j] !== postfixList[i][j])
+						{
+							flag = -1;
+							break;
+						}
+					}
+					if(flag === 1)
+					{
+						newList.push(postfixList[i])
+					}
+				}
+			}
+			return newList.length === 0 ? postfixList : newList;
+		}
+		
+        //按传入的value值进行修剪；
+        function trim(value) {            
+            let min,max;
+            for(let i = 0; i < value.length; i++)
+            {
+                if(value.charCodeAt(i) !== 12288 && value.charCodeAt(i) !== 32)
+                {
+                    min = i;
+                    break;
+                }
+            }
+            for(let i = value.length - 1; i >= 0; i--)
+            {
+                if(value.charCodeAt(i) !== 12288 && value.charCodeAt(i) !== 32)
+                {
+                    max = i + 1;                   
+                    break;
+                }
+            }
+            return value.slice(min,max);
+        }
+
+        //清除非选中状态的的背景。
+        function clearStatus() {
+            let li = email_sug.getElementsByTagName('li');            
+            for(let i = 0; i < li.length; i++)
+            {   
+                if(i !== index)
+                {
+                    li[i].style.backgroundColor = '#ffffff';                    
+                }
+            }
+        }
+
+        //input事件所需执行的函数。
+        function emailSug() {
+			let newListArr = newList();
+			let userName = split()[0];
+            userName = trim(userName);
+            hidden();
+            if(userName !== '' && userName.length < 18)
+			{
+                email_sug.style.display = 'block'
+                index = 0
+				for(let i =0; i < newListArr.length; i++)
+				{            
+					var li = document.createElement('li');
+					li.textContent = userName + '@' + newListArr[i];
+					email_sug.appendChild(li);
+				}
+			}
+        }
+		
+		//隐藏函数
+        function hidden() {
+			email_sug.innerHTML = '';
+            email_sug.style.display = 'none';
+            input.focus();
+        }
+
+        window.onload = function() {
+            input.focus();
+            console.log(1);
+            //input事件监听
+        input.addEventListener('input',emailSug);
+        //input键盘事件监听
+        input.addEventListener('keyup',function(e) {
+            let count = email_sug.childElementCount;
+            let li = email_sug.getElementsByTagName('li');
+            if(e.keyCode === 27){
+                input.select();
+            } 
+            if(count === 0)
+            {
+                return;
+            }            
+            if(e.keyCode === 38)
+            {
+                index--; 
+                index = index < 0 ? count - 1 : index;                            
+            }
+            if(e.keyCode === 40){
+                index++;
+                index = index >= count ? 0 : index;
+            }
+            clearStatus();
+            li[index].style.backgroundColor = '#bde0e7';
+            if(e.keyCode === 13){
+                input.value = li[index].textContent;
+                hidden();                
+            }                       
+        })
+        //添加事件代理,mouseover加背景和指针样式,click将值输入到input
+        email_sug.addEventListener('mousemove',function(e) {			
+            let li = email_sug.getElementsByTagName('li');
+			for(let i = 0; i < li.length; i++){
+                if(li[i] === e.target)
+                {
+                    index = i;
+                }
+            }		            
+            li[index].style.backgroundColor = '#ffc5cf';
+            clearStatus();
+		})  
+        email_sug.addEventListener('click',function(e){
+			let li = e.target;			
+			input.value = li.textContent;
+			hidden();
+		})
+        }
+    </script>
+</body>
+</html>
