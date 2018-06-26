@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #table-wrapper {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <select id="region-select">
+        <option value="0">华东</option>
+        <option value="1">华北</option>
+        <option value="2">华南</option>
+        <option value="3">全部</option>
+    </select>
+    <select id="product-select">
+            <option value="0">手机</option>
+            <option value="1">笔记本</option>
+            <option value="2">智能音箱</option>
+            <option value="3">全部</option>
+    </select> -->
+    <span id="region">地区：
+        <input type="checkbox" name="region" class="region-box" value="1">华东
+        <input type="checkbox" name="region" class="region-box" value="2">华北
+        <input type="checkbox" name="region" class="region-box" value="3">华南
+        <input type="checkbox" id="region-all">全部
+    </span>
+    <span style="margin-left: 50px;" id="product">产品：
+        <input type="checkbox" name="product" class="product-box" value="1">手机
+        <input type="checkbox" name="product" class="product-box" value="2">笔记本
+        <input type="checkbox" name="product" class="product-box" value="3">智能音箱
+        <input type="checkbox" id="product-all">全部
+    </span>
+    <div id="table-wrapper"></div>
+    <script>
+        let sourceData = [{
+            product: "手机",
+            region: "华东",
+            sale: [120, 100, 140, 160, 180, 185, 190, 210, 230, 245, 255, 270]
+        }, {
+            product: "手机",
+            region: "华北",
+            sale: [80, 70, 90, 110, 130, 145, 150, 160, 170, 185, 190, 200]
+        }, {
+            product: "手机",
+            region: "华南",
+            sale: [220, 200, 240, 250, 260, 270, 280, 295, 310, 335, 355, 380]
+        }, {
+            product: "笔记本",
+            region: "华东",
+            sale: [50, 60, 80, 110, 30, 20, 70, 30, 420, 30, 20, 20]
+        }, {
+            product: "笔记本",
+            region: "华北",
+            sale: [30, 35, 50, 70, 20, 15, 30, 50, 710, 130, 20, 20]
+        }, {
+            product: "笔记本",
+            region: "华南",
+            sale: [80, 120, 130, 140, 70, 75, 120, 90, 550, 120, 110, 100]
+        }, {
+            product: "智能音箱",
+            region: "华东",
+            sale: [10, 30, 4, 5, 6, 5, 4, 5, 6, 5, 5, 25]
+        }, {
+            product: "智能音箱",
+            region: "华北",
+            sale: [15, 50, 15, 15, 12, 11, 11, 12, 12, 14, 12, 40]
+        }, {
+            product: "智能音箱",
+            region: "华南",
+            sale: [10, 40, 10, 6, 5, 6, 8, 6, 6, 6, 7, 26]
+        }]
+
+        let regionSpan = document.getElementById('region');
+        let productSpan = document.getElementById('product')
+        let regionBox = document.getElementsByClassName('region-box');
+        let productBox = document.getElementsByClassName('product-box');
+        let wrapper = document.getElementById('table-wrapper');
+        let regionAll = document.getElementById('region-all');
+        let productAll = document.getElementById('product-all');
+        let regionReplaceArray = ['华东', '华南', '华北'];
+        let productReplaceArray = ['手机', '笔记本', '智能音箱'];
+
+        regionSpan.onchange = function (e) {
+            let box = e.target;
+            if (box.name === 'region') {
+                check('region');
+                showTable();
+            }
+        }
+
+        productSpan.onchange = function (e) {
+            let box = e.target;
+            if (box.name === 'product') {
+                check('product');
+                showTable();
+            }
+        }
+
+        regionAll.onclick = function () {
+            checkAll('region');
+            showTable();
+        }
+
+        productAll.onclick = function () {
+            checkAll('product');
+            showTable();
+        }
+
+        function countChecked(checkBoxes) {
+            let count = 0;
+            for (let i = 0; i < checkBoxes.length; i++) {
+                if (checkBoxes[i].checked === true) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        //其他选择框控制 总选框
+        function check(str) {
+            if (str === 'region') {
+                for (let i = 0; i < regionBox.length; i++) {
+                    if (regionBox[i].checked === false) {
+                        regionAll.checked = false;
+                        return;
+                    }
+                    regionAll.checked = true;
+                }
+            }
+            if (str === 'product') {
+                for (let i = 0; i < productBox.length; i++) {
+                    if (productBox[i].checked === false) {
+                        productAll.checked = false;
+                        return;
+                    }
+                    productAll.checked = true;
+                }
+            }
+        }
+
+        //总选框控制 其他选择框
+        function checkAll(str) {
+            if (str === 'region') {
+                if (regionAll.checked === true) {
+                    for (let i = 0; i < regionBox.length; i++) {
+                        regionBox[i].checked = true;
+                    }
+                } else {
+                    for (let i = 0; i < regionBox.length; i++) {
+                        regionBox[i].checked = false;
+                    }
+                }
+            }
+            if (str === 'product') {
+                if (productAll.checked === true) {
+                    for (let i = 0; i < productBox.length; i++) {
+                        productBox[i].checked = true;
+                    }
+                } else {
+                    for (let i = 0; i < productBox.length; i++) {
+                        productBox[i].checked = false;
+                    }
+                }
+            }
+        }
+
+
+
+        // regionSelect.onchange = function() {
+        //     wrapper.innerHTML = '';
+        //     let table = showTable()
+        //     wrapper.appendChild(table);
+        // }
+
+        // productSelect.onchange = function() {
+        //     wrapper.innerHTML = '';
+        //     let table = showTable()
+        //     wrapper.appendChild(table);
+        // }
+        //比较 商品 地区 的 选择数量，返回唯一的字符串；
+        function compareResult() {
+            let regionCount = countChecked(regionBox);
+            let productCount = countChecked(productBox);
+            if (regionCount === 1 && productCount === 1) {
+                return 'r1p1';
+            } else if (regionCount === 1 && productCount > 1) {
+                return 'r1p2';
+            } else if (regionCount > 1 && productCount === 1) {
+                return 'r2p1';
+            } else if (regionCount > 1 && productCount > 1) {
+                return 'r2p2';
+            }
+        }
+
+
+        //将对象转为数组，按选择框的数量，决定地区，商品的先后；
+        function objectToArray(ob) {
+            let tempArr = new Array();
+            let compareTemp = compareResult();
+            if (compareTemp === 'r1p2') {
+                tempArr.push(ob.region);
+                tempArr.push(ob.product);
+            } else {
+                tempArr.push(ob.product);
+                tempArr.push(ob.region);
+            }
+            for (i = 0; i < ob.sale.length; i++) {
+                tempArr.push(ob.sale[i]);
+            }
+            return tempArr;
+        }
+
+        //将选中的数据整理成一个二维数组；
+        function checkedData() {
+            let dataArr = new Array();
+            for (let i = 0; i < regionBox.length; i++) {
+                if (regionBox[i].checked === true) {
+                    for (let j = 0; j < productBox.length; j++) {
+                        if (productBox[j].checked === true) {
+                            for (let k = 0; k < sourceData.length; k++) {
+                                if (regionReplaceArray[i] === sourceData[k].region && productReplaceArray[j] === sourceData[k].product) {
+                                    let tempArr = objectToArray(sourceData[k]);
+                                    dataArr.push(tempArr);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return dataArr;
+        }
+
+//对二维数组排序
+        function sort() {
+            let dataArr = checkedData();
+            dataArr.sort(function(a,b) {
+                return a[0].charCodeAt(0) - b[0].charCodeAt(0);
+            });
+            return dataArr;
+        }
+
+        function createTh() {
+            let compareTemp = compareResult();
+            let tempArr = ['商品', '地区', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+            if (compareTemp === 'r1p2') {
+                tempArr = ['地区', '商品', '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+            }
+            let tr = document.createElement('tr');
+            for (i = 0; i < tempArr.length; i++) {
+                let th = document.createElement('th');
+                th.textContent = tempArr[i];
+                tr.appendChild(th);
+            }
+            return tr;
+        }
+
+        function createTable(dataArray) {
+            // let dataArray = checkedData();
+            let table = document.createElement('table');
+            table.border = '1';
+            table.cellSpacing = '0';
+            table.cellPadding = '10';
+            table.appendChild(createTh());
+            for (let i = 0; i < dataArray.length; i++) {
+                let tr = document.createElement('tr');
+                for (let j = 0; j < dataArray[i].length; j++) {
+                    let td = document.createElement('td');
+                    td.textContent = dataArray[i][j];
+                    tr.appendChild(td);
+                }
+                table.appendChild(tr);
+            }
+            return table;
+        }
+
+        function showTable() {
+            wrapper.innerHTML = '';
+            let dataArray = sort();
+            if (dataArray.length !== 0) {
+                let table = createTable(dataArray);
+                table = editTable(table);
+                wrapper.appendChild(table);
+            }
+        }
+
+        function editTable(table) {
+            // let table = createTable(sort());
+            let rows = table.rows;
+            let i = rows.length - 1;
+            while(i > 0)
+            {
+                let n = 1;
+                while(rows[i].cells[0].textContent === rows[i - 1].cells[0].textContent && i > 0)
+                {
+                    console.log('ok');
+                    rows[i].deleteCell(0);
+                    n++;
+                    i--;
+                    console.log('n' + n);
+                }                
+                rows[i].cells[0].rowSpan = n;
+                i--;
+                console.log(i);
+            }
+            return table;
+        }
+    </script>
+</body>
+
+</html>

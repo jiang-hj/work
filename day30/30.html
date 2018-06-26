@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #table-wrapper {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <select id="region-select">
+        <option value="0">华东</option>
+        <option value="1">华北</option>
+        <option value="2">华南</option>
+        <option value="3">全部</option>
+    </select>
+    <select id="product-select">
+            <option value="0">手机</option>
+            <option value="1">笔记本</option>
+            <option value="2">智能音箱</option>
+            <option value="3">全部</option>
+    </select>
+    <div id="table-wrapper"></div>
+    <script>
+        let sourceData = [{
+            product: "手机",
+            region: "华东",
+            sale: [120, 100, 140, 160, 180, 185, 190, 210, 230, 245, 255, 270]
+        }, {
+            product: "手机",
+            region: "华北",
+            sale: [80, 70, 90, 110, 130, 145, 150, 160, 170, 185, 190, 200]
+        }, {
+            product: "手机",
+            region: "华南",
+            sale: [220, 200, 240, 250, 260, 270, 280, 295, 310, 335, 355, 380]
+        }, {
+            product: "笔记本",
+            region: "华东",
+            sale: [50, 60, 80, 110, 30, 20, 70, 30, 420, 30, 20, 20]
+        }, {
+            product: "笔记本",
+            region: "华北",
+            sale: [30, 35, 50, 70, 20, 15, 30, 50, 710, 130, 20, 20]
+        }, {
+            product: "笔记本",
+            region: "华南",
+            sale: [80, 120, 130, 140, 70, 75, 120, 90, 550, 120, 110, 100]
+        }, {
+            product: "智能音箱",
+            region: "华东",
+            sale: [10, 30, 4, 5, 6, 5, 4, 5, 6, 5, 5, 25]
+        }, {
+            product: "智能音箱",
+            region: "华北",
+            sale: [15, 50, 15, 15, 12, 11, 11, 12, 12, 14, 12, 40]
+        }, {
+            product: "智能音箱",
+            region: "华南",
+            sale: [10, 40, 10, 6, 5, 6, 8, 6, 6, 6, 7, 26]
+        }]
+
+        let regionSelect = document.getElementById('region-select');
+        let productSelect = document.getElementById('product-select')
+        let wrapper = document.getElementById('table-wrapper');
+
+        regionSelect.onchange = function() {
+            wrapper.innerHTML = '';
+            let table = showTable()
+            wrapper.appendChild(table);
+        }
+
+        productSelect.onchange = function() {
+            wrapper.innerHTML = '';
+            let table = showTable()
+            wrapper.appendChild(table);
+        }
+
+        function selectData() {
+            let indexArr = new Array();
+            let region = regionSelect.options[regionSelect.selectedIndex].innerHTML;
+            let product = productSelect.options[productSelect.selectedIndex].innerHTML;
+            for(let i = 0; i < sourceData.length; i++)
+            {                
+                // if(region !== '全部' && product !== '全部' && sourceData[i].region === region && sourceData[i].product === product)
+                // {
+                //     indexArr.push(i);
+                // }else if(region === '全部' && sourceData[i].product === product){
+                //     indexArr.push(i);
+                // }else if(product === '全部' && sourceData[i].region === region){
+                //     indexArr.push(i);
+                // }else if(region === '全部' && product === '全部'){
+                //     indexArr.push(i);
+                // }
+                if(region === '全部')
+                {
+                    if(product === '全部')
+                    {
+                        indexArr.push(i);
+                    }else if(sourceData[i].product === product)
+                    {
+                        indexArr.push(i);
+                    }
+                }else if(sourceData[i].region === region){
+                    if(product === '全部')
+                    {
+                        indexArr.push(i);
+                    }else if(sourceData[i].product === product)
+                    {
+                        indexArr.push(i);
+                    }
+                }
+            }
+            return indexArr;
+        }
+
+        function objectToArray(ob) {
+            let tempArr = new Array();
+            tempArr.push(ob.product);
+            tempArr.push(ob.region);
+            for(i = 0; i < ob.sale.length; i++)
+            {
+                tempArr.push(ob.sale[i]);
+            }
+            return tempArr;
+        }
+
+        function selectDataArray() {
+            let index = selectData();
+            let dataArray = new Array();
+            for(let i = 0; i < index.length; i++)
+            {
+                let ob = sourceData[index[i]];
+                let tempArr = objectToArray(ob);
+                dataArray.push(tempArr);
+            }
+            return dataArray;
+        }
+
+        function createTh() {
+            let tempArr = ['商品','地区','1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'];
+            let tr = document.createElement('tr');            
+            for(i = 0; i < tempArr.length; i++)
+            {
+                let th = document.createElement('th');                
+                th.textContent = tempArr[i];                
+                tr.appendChild(th);                
+            }            
+            return tr;
+            // let th1 = document.createElement('th');
+            // let th2 = document.createElement('th');
+            // th1.textContent = '商品';            
+            // th2.textContent = '地区';
+            // tr.appendChild(th1);
+            // tr.appendChild(th2);
+            // for(i = 1)
+        }
+
+        function showTable() {
+            let selectDataArr = selectDataArray();
+            let table = document.createElement('table');
+            table.border = '1' ;
+            table.cellSpacing = '0'; 
+            table.cellPadding = '10';
+            table.appendChild(createTh());
+            for(let i = 0; i < selectDataArr.length; i++)
+            {
+                let tr = document.createElement('tr');
+                for(let j = 0; j < selectDataArr[i].length; j++)
+                {
+                    let td = document.createElement('td');
+                    td.textContent = selectDataArr[i][j];
+                    tr.appendChild(td);                    
+                }
+                table.appendChild(tr);
+            }
+            return table;
+        }
+    </script>
+</body>
+
+</html>

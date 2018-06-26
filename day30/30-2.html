@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #table-wrapper {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <span id="region">地区：
+        <input type="checkbox" name="region" class="region-box" value="1">华东
+        <input type="checkbox" name="region" class="region-box" value="2">华北
+        <input type="checkbox" name="region" class="region-box" value="3">华南
+        <input type="checkbox" id="region-all">全部
+    </span>
+    <span style="margin-left: 50px;" id="product">产品：
+        <input type="checkbox" name="product" class="product-box" value="1">手机
+        <input type="checkbox" name="product" class="product-box" value="2">笔记本
+        <input type="checkbox" name="product" class="product-box" value="3">智能音箱
+        <input type="checkbox" id="product-all">全部
+    </span>
+    <div id="table-wrapper"></div>
+    <script src="js/variable.js"></script>
+    <script src="js/checkbox.js"></script>
+    <script src="js/edit.js"></script>
+    <script src="js/table.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
