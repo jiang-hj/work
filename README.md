@@ -8,3 +8,6 @@
 25-27日作业 [demo](https://jiang-hj.github.io/work/day28/28.html)
 <br>
 小卖家-1 [demo](https://jiang-hj.github.io/work/day30/30-2.html)
+<br>
+小卖家-2 [demo](https://jiang-hj.github.io/work/day34/34.html)
+画图练习 [demo](https://jiang-hj.github.io/work/day34/draw.html)

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: #555555;
+        }
+
+        #canvas {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <img src="34-1.svg" alt="不支持svg">
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script>
+        window.onload = function() {
+            let canvas = document.getElementById('canvas');
+            let ctx = canvas.getContext('2d');         
+           
+            
+            draw();
+            setInterval(clock,1000);
+
+
+            
+            function draw() {
+                ctx.beginPath();
+                ctx.arc(300,100,75,0,Math.PI*2,false);
+                ctx.rect(120,30,70,40);
+
+                ctx.moveTo(25,25);
+                ctx.lineTo(75,80);
+
+                ctx.stroke();
+                ctx.closePath();
+
+                ctx.beginPath();
+                ctx.moveTo(300,340);
+                ctx.bezierCurveTo(285, 325, 290, 300,310,290);
+                ctx.bezierCurveTo(310, 275, 320, 270,340,270);
+                ctx.quadraticCurveTo(390,205,430,260);
+                ctx.bezierCurveTo(475, 250, 485, 325,460,320);
+                ctx.bezierCurveTo(460, 330, 440, 350,420,330);
+                ctx.bezierCurveTo(410, 315, 420, 305,430,305);
+                ctx.bezierCurveTo(450, 310, 445, 325,430,320);
+                ctx.moveTo(420,330);
+                ctx.bezierCurveTo(415, 345, 385, 360,360,340);
+                ctx.bezierCurveTo(340, 320, 370, 300,380,320);
+                ctx.moveTo(360,340);
+                ctx.bezierCurveTo(360, 345, 320, 360,300,340);
+                let radial = ctx.createRadialGradient(350,260,0,380,280,70);
+                radial.addColorStop(0,"rgba(100,200,250,0.11)")
+                radial.addColorStop(1,"#ffffff");
+                ctx.fillStyle = radial;
+                ctx.strokeStyle = 'rgba(100,200,250,0.7)'
+                ctx.fill();                
+                ctx.stroke();
+                
+            
+                ctx.font = 'bold 35px arial';
+                ctx.strokeStyle = '#005578'
+                ctx.strokeText("Hello World",20,120)
+            }
+            
+            function clock() {
+                let cx = 110;
+                let cy = 390;
+                let r = 100; 
+
+
+                let date = new Date();
+                
+                let hours = date.getHours();
+                let min = date.getMinutes();
+                let sec = date.getSeconds();
+
+                let hrad = hours * 30 * Math.PI/180 + min / 60 * 30 * Math.PI/180 - Math.PI/2;
+                let mrad = min * 6 * Math.PI/180 - Math.PI/2;
+                let srad = sec * 6 * Math.PI/180 - Math.PI/2;
+
+                ctx.clearRect(10,290,200,200);
+                
+                ctx.strokeStyle = '#000'
+                ctx.beginPath();
+                for(let i = 0; i < 60; i++)
+                {
+                    ctx.moveTo(cx,cy);
+                    ctx.arc(cx,cy,r, i * Math.PI / 30, (i + 1) * Math.PI / 30, false)
+                }
+                ctx.stroke();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.arc(cx, cy, r * 0.95, 0, Math.PI * 2,false);
+                ctx.fillStyle = "#fff";                
+                ctx.fill();                
+                ctx.beginPath();
+                for(let i = 0; i < 12; i++)
+                {
+                    ctx.moveTo(cx,cy);
+                    ctx.arc(cx, cy, r, i * Math.PI / 6, (i + 1) * Math.PI /6, false);                    
+                }     
+                ctx.lineWidth = 3;           
+                ctx.stroke();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.arc(cx, cy, r * 0.9, 0, Math.PI * 2,false);
+                ctx.fillStyle = "#fff";                
+                ctx.fill(); 
+                                
+                ctx.beginPath();
+                ctx.lineJion = 'round'
+                ctx.moveTo(cx,cy)
+                ctx.arc(cx,cy,r * 0.5,hrad,hrad,false);
+                ctx.lineWidth = 4;
+                ctx.stroke();
+
+                ctx.moveTo(cx,cy)
+                ctx.arc(cx,cy,r * 0.7,mrad,mrad,false);
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                ctx.moveTo(cx,cy)
+                ctx.arc(cx,cy,r * 0.8,srad,srad,false);      
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                ctx.closePath();
+                
+            } 
+        }
+    </script>
+</body>
+</html>
