@@ -1,7 +1,7 @@
 
 function show() {    
     let state = location.href.split('?rp')[1];    
-    if (state !== null) {
+    if (state) {
         for (let i = 0; i < state.length; i++) {
             if (state[i] === '1') {
                 box[i].checked = true;                
