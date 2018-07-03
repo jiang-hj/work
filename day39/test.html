@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+    <button id="a">A</button>
+    <button id="b">B</button>
+    <button id="c">C</button>
+
+    <button id="d">D</button>
+    <button id="e">E</button>
+    <button id="f">F</button>
+
+
+    <div id="contABC"></div>
+    <div id="contDEF"></div>
+    <script type="text/javascript">
+        let btns = document.getElementsByTagName('button');
+        let contABC = document.getElementById('contABC');
+        let contDEF = document.getElementById('contDEF');
+        
+        window.onload = function() {
+            show();
+            
+            for(let i = 0; i < btns.length; i++)
+            {
+                btns[i].onclick = function() {
+                    btnClickA(this,i);
+                    console.log(this);
+                }
+            }
+            
+            function btnClickD(ele) {
+                let addChar = ele.innerHTML;
+                location.hash += addChar;
+            }
+            
+            function btnClickA(ele,idx) {
+                let addChar = ele.innerHTML;
+                let hash = location.hash;
+                let tempArray = hash.split('-');
+                if(tempArray.length === 1){
+                    tempArray.push('');
+                }
+                console.log(tempArray);
+                if(idx < 3)
+                {                    
+                    tempArray[0] += addChar;
+                }else{
+                    // if(tempArray[1])
+                    tempArray[1] += addChar;
+                    
+//                     else
+//                     tempArray[0] += '-' + addChar;
+                }
+                console.log(tempArray);
+                location.hash = tempArray.join('-');      
+                
+            }
+            
+            function transform() {
+                let temp = location.hash;
+                temp = temp.substr(1);
+                let tempArray = temp.split('-');
+                if(tempArray.length === 1)
+                {
+                    tempArray[1] = '';
+                }
+                return tempArray;
+            }
+            
+            function show() {
+                let tempArray = transform();
+                contABC.textContent = tempArray[0];
+                contDEF.textContent = tempArray[1];
+            }
+            
+            window.onhashchange = show;
+        }
+    </script>
+
+</body>
+
+</html>
