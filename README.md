@@ -16,3 +16,5 @@
 <br>
 小卖家-4 [demo](https://jiang-hj.github.io/work/day39/39.html)
  [demo](https://jiang-hj.github.io/work/day39/39-2.html)
+<br>
+餐厅2 [demo](https://jiang-hj.github.io/work/day44/44.html)
