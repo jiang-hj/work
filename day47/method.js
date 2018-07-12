@@ -21,57 +21,12 @@ function differentRandom(len,num) {             //生成 num 个，0 - (len-1)�
     return result;                                              //返回结果
 }
 
-//上菜方法；
 
-
-function command(ob,method) {
-    ob[method]();
-}
-
-
-
-
-
-//进行点菜；
-var order = function() {                            
-    return new Promise(function(resolve,reject) {
-        setTimeout(resolve,0,customer.ordered());
-    })
-};
-
-//传菜单或上菜；
-var pass = function(value) {
-    return new Promise(function(resolve,reject) {        
-        setTimeout(resolve,0.5,waiterTom.work(value));
-    });
-};
-
-
-//开始 流程；
-var begin = function() {
-    var begin = new Promise(function(resolve,reject){
-        console.log('客人坐了下来，开始点菜');
-        setTimeout(resolve, 3 * unit)
-    });
-    begin
-    .then(order)
-    .then(pass)
-    .then(function(value) {
-    console.log(value);
-    cookTony.work(value);
-    })
-}
-
-//上菜流程；
-var serving = function (dish) {
-    
-    var begin = new Promise(function(resolve,reject){
-        console.log('客人坐了下来，开始点菜');
-        setTimeout(resolve, 1 * unit, waiterTom.work(dish));
-    });
-    begin
-    .then(function(value) {
-        customer.dishes.push(value);
-        customer.eat();
-    })
+function pay(value) {
+    myRestaurant.cash = Number(myRestaurant.cash) + Number(value);
+    console.log(myRestaurant.cash);
+    hidden(divCustomer);
+    empty = true;
+    say(waiterTom,'欢迎再来！');
+    refreshCash(myRestaurant.cash);
 }

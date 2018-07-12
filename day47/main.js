@@ -1,4 +1,6 @@
-var unit = 200;
+var unit = 1000;
+    t = 0.5 * unit / 1000,
+    empty = true;
 
 var menu = (function(array) {
     var tempArray = [];
@@ -29,7 +31,8 @@ var waiterTom = myRestaurant.hire(Waiter,{
     wage: 8000
 });
 
-var customer = new Customer();
+var customer;
+// var customer = new Customer();
 
 // var waiterWork = function(value) {
 //     return new Promise(function(resolve,reject) {        
@@ -37,9 +40,13 @@ var customer = new Customer();
 //     })
 // };
 window.onload = function() {
-   begin();
-    
-
+    // begin();
+    cash.textContent = myRestaurant.cash;
+    document.getElementById('begin').onclick = function() {
+        if(empty){
+            begin();
+        }
+    }
 }
 // .then(function(value) {
 //     return new Promise(function(resolve,reject) {
